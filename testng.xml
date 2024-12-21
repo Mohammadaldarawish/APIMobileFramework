@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"></listener>
+    </listeners>
+    <test verbose="2" preserve-order="true" name="/Users/mohammed/Downloads/APIAutomationFramework">
+        <classes>
+            <class name="tests.ApiTests"> </class>
+            <class name="api.ApiEndpoints"></class>
+            <class name="base.BaseTest"></class>
+            <class name="models.RequestBodies"></class>
+            <class name="utils.ApiHelper"></class>
+        </classes></test>
+</suite>
