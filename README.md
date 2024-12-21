@@ -1,35 +1,38 @@
-API Automation Testing
+API Automation Testing:
+
 This project contains automated tests for the system's API endpoints, written in Java using RestAssured and TestNG. The tests cover authentication, contact verification, enrollment balances, transaction details, and more.
 
-Prerequisites
-Java 8 or higher
-Maven
-RestAssured
-TestNG
-Allure (optional for reporting)
-Setup
-Clone the repository:
+* Prerequisites:
 
-bash
-git clone <repository-url>
-Install dependencies:
+1- Java 8 or higher
 
-bash
-mvn install
-Running Tests
-Run the tests with Maven:
+2- Maven
 
-bash
-mvn test
-Test Cases
+3- RestAssured
+
+4- TestNG
+
+5- Allure (optional for reporting)
+
+* Setup
+
+1- Clone the repository: git clone <repository-url>
+
+2- Install dependencies: mvn install
+
+* Running Tests: 
+
+Run the tests with Maven: mvn test
+
+* Test Cases
 Tests include:
 
-Authentication (OTP, login, logout, token refresh)
-Contact management (verify contact, retrieve balance, debts, transactions, documents)
-Message handling (send messages)
-Reporting
-Generate test reports using Allure:
+1- Authentication (OTP, login, logout, token refresh)
 
-bash
-mvn allure:serve
+2- Contact management (verify contact, retrieve balance, debts, transactions, documents)
+
+3- Message handling (send messages)
+
+* Reporting
+Generate test reports using Allure: mvn allure:serve
 This will display the test results in your browser.
