@@ -1,5 +1,7 @@
 package base;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -32,6 +34,8 @@ public class BaseTest {
         // Set the global base URI here once for all tests
         baseURI = properties.getProperty("baseURI");
         RestAssured.baseURI = baseURI;
+        Allure.addAttachment("Environment", "OS: MacOS, Java: 11, Browser: Chrome, Owner:Mohammad Aldarawish");
+
 
     }
 
@@ -39,7 +43,6 @@ public class BaseTest {
     public Object[][] provideContactIds() {
         String contactId1 = properties.getProperty("contactId1");
         String contactId2 = properties.getProperty("contactId2");
-
         return new Object[][]{
                 {contactId1},
                 {contactId2},
