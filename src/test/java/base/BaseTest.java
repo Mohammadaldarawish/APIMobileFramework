@@ -37,9 +37,12 @@ public class BaseTest {
 
     @DataProvider(name = "contactIdProvider")
     public Object[][] provideContactIds() {
+        String contactId1 = properties.getProperty("contactId1");
+        String contactId2 = properties.getProperty("contactId2");
+
         return new Object[][]{
-                {"4083642"},
-                {"1234567"}
+                {contactId1},
+                {contactId2},
         };
     }
 }
