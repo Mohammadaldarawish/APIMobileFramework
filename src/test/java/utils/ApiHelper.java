@@ -11,6 +11,69 @@ public class ApiHelper {
         return RestAssured.baseURI;  // Using the global baseURI set in BaseTest
     }
 
+    public static Response sendGetRequest(String fullURI, String accessToken) {
+        Response response = RestAssured.given()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .get(fullURI)
+                .then()
+                .extract().response();
+
+        logRequestAndResponse("GET", fullURI, null, response);
+        return response;
+    }
+    public static Response sendGetRequestWithQueryParam(String baseURI, String page, String accessToken) {
+        Response response = RestAssured.given()
+                .queryParam("page", page)
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .get(baseURI)
+                .then()
+                .extract().response();
+
+        logRequestAndResponse("GET", baseURI + "?page=" + page, null, response);
+        return response;
+    }
+
+    public static Response sendPostRequest(String baseURI, Object body) {
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(body, ObjectMapperType.GSON)
+                .when()
+                .post(baseURI)
+                .then()
+                .extract().response();
+
+        logRequestAndResponse("POST", baseURI, body, response);
+        return response;
+    }
+
+    public static Response sendPutRequest(String baseURI, Object body, String accessToken) {
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(body, ObjectMapperType.GSON)
+                .when()
+                .put(baseURI)
+                .then()
+                .extract().response();
+
+        logRequestAndResponse("PUT", baseURI, body, response);
+        return response;
+    }
+
+    public static Response sendDeleteRequest(String baseURI, String contactId, String accessToken) {
+        Response response = RestAssured.given()
+                .pathParam("contactId", contactId)
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .delete(baseURI)
+                .then()
+                .extract().response();
+
+        logRequestAndResponse("DELETE", baseURI, null, response);
+        return response;
+    }
     private static void logRequestAndResponse(String method, String baseURI, Object body, Response response) {
         long responseTime = response.getTime();  // Time taken for the request
 
@@ -41,74 +104,5 @@ public class ApiHelper {
         System.out.println("Request Timestamp: " + java.time.LocalDateTime.now());
         System.out.println("Request Origin: " + System.getProperty("user.name") + "@" + System.getProperty("user.home"));
     }
-
-    public static Response sendPostRequest(String baseURI, Object body) {
-        Response response = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(body, ObjectMapperType.GSON)
-                .when()
-                .post(baseURI)
-                .then()
-                .extract().response();
-
-        logRequestAndResponse("POST", baseURI, body, response);
-        return response;
-    }
-
-    public static Response sendGetRequest(String fullURI, String accessToken) {
-        Response response = RestAssured.given()
-                .header("Authorization", "Bearer " + accessToken)
-                .when()
-                .get(fullURI)
-                .then()
-                .extract().response();
-
-        logRequestAndResponse("GET", fullURI, null, response);
-        return response;
-    }
-
-
-    public static Response sendGetRequestWithQueryParam(String baseURI, String page, String accessToken) {
-        Response response = RestAssured.given()
-                .queryParam("page", page)
-                .header("Authorization", "Bearer " + accessToken)
-                .when()
-                .get(baseURI)
-                .then()
-                .extract().response();
-
-        logRequestAndResponse("GET", baseURI + "?page=" + page, null, response);
-        return response;
-    }
-
-    public static Response sendPutRequest(String baseURI, Object body, String accessToken) {
-        Response response = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-                .body(body, ObjectMapperType.GSON)
-                .when()
-                .put(baseURI)
-                .then()
-                .extract().response();
-
-        logRequestAndResponse("PUT", baseURI, body, response);
-        return response;
-    }
-
-    public static Response sendDeleteRequest(String baseURI, String contactId, String accessToken) {
-        Response response = RestAssured.given()
-                .pathParam("contactId", contactId)
-                .header("Authorization", "Bearer " + accessToken)
-                .when()
-                .delete(baseURI)
-                .then()
-                .extract().response();
-
-        logRequestAndResponse("DELETE", baseURI, null, response);
-        return response;
-    }
-
-
-
 
 }

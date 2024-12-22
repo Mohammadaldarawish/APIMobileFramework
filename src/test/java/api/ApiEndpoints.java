@@ -1,7 +1,8 @@
 package api;
 
+import static tests.ApiTests.contactId;
+
 public class ApiEndpoints {
-    public static String contactId = System.getProperty("contactId", "4083642");  // Default contact ID
 
     public static String getSendOtp() {
         return "/api/v1/auth/send-otp";

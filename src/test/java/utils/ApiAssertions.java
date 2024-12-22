@@ -36,4 +36,5 @@ public class ApiAssertions {
     public static void assertResponseContainsField(Response response, String field) {
         assertThat("Response does not contain field: " + field, response.jsonPath().get(field), notNullValue());
     }
+
 }
