@@ -16,7 +16,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ApiTests extends BaseTest {
 
     public  String page = "1";
-    public  static String contactId = "4083642";
     public  String accessToken;
     public  String refresh_token;
 
@@ -24,8 +23,8 @@ public class ApiTests extends BaseTest {
     @Feature("mnv")
     @Story("")
 
-    @Test(description = "Test sending OTP and receiving tokens", priority = 1, groups = {"auth"})
-    public void sendOTP() {
+    @Test(description = "Test sending OTP and receiving tokens", dataProvider = "contactIdProvider", priority = 1, groups = {"auth"})
+    public void sendOTP(String contactId) {
         RequestBodies.SendOtpRequest requestBody = new RequestBodies.SendOtpRequest(contactId);
         Response response = ApiHelper.sendPostRequest(baseURI + ApiEndpoints.getSendOtp(), requestBody);
         ApiAssertions.assertStatusCode(response, 200);
@@ -37,8 +36,8 @@ public class ApiTests extends BaseTest {
         ApiAssertions.assertTokenStructure(refresh_token);
     }
     // Positive Test: Test Login functionality
-    @Test(description = "Test Login functionality", priority = 2, groups = {"auth"})
-    public void login() {
+    @Test(description = "Test to verify the contact information", dataProvider = "contactIdProvider", priority = 2, groups = {"contact"})
+    public void login(String contactId) {
         RequestBodies.LoginRequest requestBody = new RequestBodies.LoginRequest(contactId, "0000");
         Response response = ApiHelper.sendPostRequest(baseURI + ApiEndpoints.getLogin(), requestBody);
         ApiAssertions.assertStatusCode(response, 200);
@@ -72,10 +71,10 @@ public class ApiTests extends BaseTest {
 
 
     // Positive Test: Test to verify the contact information using the contact ID
-    @Test(description = "Test to verify the contact information using the contact ID", priority = 5, groups = {"contact"})
-    public void verifyContact() {
+    @Test(description = "Test to verify the contact information using the contact ID", priority = 5, groups = {"contact"}, dataProvider = "contactIdProvider")
+    public void verifyContact(String contactId) {
         RequestBodies.VerifyContactRequest requestBody = new RequestBodies.VerifyContactRequest(contactId);
-        Response response = ApiHelper.sendPostRequest(baseURI + ApiEndpoints.getVerifyContact(), requestBody);
+        Response response = ApiHelper.sendPostRequest(baseURI + ApiEndpoints.getVerifyContact(contactId), requestBody);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertSuccessFlag(response, true);
         ApiAssertions.assertMessage(response, "Contact verified");
@@ -84,9 +83,9 @@ public class ApiTests extends BaseTest {
 
 
     // Positive Test: Test to retrieve the enrollment balance for the enrolled debt
-    @Test(description = "Test to retrieve the enrollment balance for the enrolled debt", priority = 6, groups = {"debt", "balance"})
-    public void getEnrollmentBalance() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getEnrolledDebt(), accessToken);
+    @Test(description = "Test to retrieve the enrollment balance for the enrolled debt", priority = 6, groups = {"debt", "balance"}, dataProvider = "contactIdProvider")
+    public void getEnrollmentBalance(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getEnrollmentBalance(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Enrollment balance retrieved");
         ApiAssertions.assertResponseContainsData(response);
@@ -95,9 +94,9 @@ public class ApiTests extends BaseTest {
 
 
     // Positive Test: Test to retrieve the enrolled debt details
-    @Test(description = "Test to retrieve the enrolled debt details", priority = 7, groups = {"debt"})
-    public void getEnrolledDebt() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getEnrolledDebt(), accessToken);
+    @Test(description = "Test to retrieve the enrolled debt details", priority = 7, groups = {"debt"}, dataProvider = "contactIdProvider")
+    public void getEnrolledDebt(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getEnrolledDebt(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Enrolled debt details retrieved");
         ApiAssertions.assertResponseContainsData(response);
@@ -105,9 +104,9 @@ public class ApiTests extends BaseTest {
 
 
     // Positive Test: Test to retrieve the contact transaction details
-    @Test(description = "Test to retrieve the contact transaction details", priority = 8, groups = {"transaction"})
-    public void getContactTransaction() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getContactTransactions(), accessToken);
+    @Test(description = "Test to retrieve the contact transaction details", priority = 8, groups = {"transaction"}, dataProvider = "contactIdProvider")
+    public void getContactTransaction(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getContactTransactions(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Contact transactions retrieved");
         ApiAssertions.assertResponseContainsData(response);
@@ -115,9 +114,9 @@ public class ApiTests extends BaseTest {
 
 
     // Positive Test: Test to retrieve the contact documents
-    @Test(description = "Test to retrieve the contact documents", priority = 9, groups = {"documents"})
-    public void getContactDocuments() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getContactDocuments(), accessToken);
+    @Test(description = "Test to retrieve the contact documents", priority = 9, groups = {"documents"}, dataProvider = "contactIdProvider")
+    public void getContactDocuments(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getContactDocuments(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Contact documents retrieved");
         ApiAssertions.assertResponseContainsData(response);
@@ -126,9 +125,9 @@ public class ApiTests extends BaseTest {
 
 
     // Positive Test: Test to retrieve the contact details
-    @Test(description = "Test to retrieve the contact details", priority = 10, groups = {"contact"})
-    public void getContactDetails() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getContactDetails(), accessToken);
+    @Test(description = "Test to retrieve the contact details", priority = 10, groups = {"contact"}, dataProvider = "contactIdProvider")
+    public void getContactDetails(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getContactDetails(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Contact details retrieved");
         ApiAssertions.assertResponseContainsData(response);
@@ -137,32 +136,32 @@ public class ApiTests extends BaseTest {
 
 
     // Positive Test: Test to retrieve all payment transactions
-    @Test(description = "Test to retrieve all payment transactions", priority = 11, groups = {"transaction", "payment"})
-    public void getAllPaymentTransactions() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getPaymentTransactions(), accessToken);
+    @Test(description = "Test to retrieve all payment transactions", priority = 11, groups = {"transaction", "payment"}, dataProvider = "contactIdProvider")
+    public void getAllPaymentTransactions(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getPaymentTransactions(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Payment transactions retrieved");
     }
 
-    @Test(description = "Test to retrieve the uploaded documents using the access token and ensure the response is successful.", priority = 12, groups = {"documents"})
-    public void getUploadedDocuments() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getUploadedDocuments(), accessToken);
+    @Test(description = "Test to retrieve the uploaded documents using the access token and ensure the response is successful.", priority = 12, groups = {"documents"}, dataProvider = "contactIdProvider")
+    public void getUploadedDocuments(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getUploadedDocuments(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Uploaded documents retrieved");
         ApiAssertions.assertResponseContainsData(response);
     }
 
-    @Test(description = "Test to retrieve the statements using the access token and ensure the response is successful.", priority = 13, groups = {"statements"})
-    public void getStatements() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getStatements(), accessToken);
+    @Test(description = "Test to retrieve the statements using the access token and ensure the response is successful.", priority = 13, groups = {"statements"}, dataProvider = "contactIdProvider")
+    public void getStatements(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getStatements(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Statements retrieved");
         ApiAssertions.assertResponseContainsData(response);
     }
 
-    @Test(description = "Test to retrieve the budget tracking details using the access token and ensure the response is successful.", priority = 14, groups = {"budget"})
-    public void getBudgetTracking() {
-        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getBudgetTracking(), accessToken);
+    @Test(description = "Test to retrieve the budget tracking details using the access token and ensure the response is successful.", priority = 14, groups = {"budget"}, dataProvider = "contactIdProvider")
+    public void getBudgetTracking(String contactId) {
+        Response response = ApiHelper.sendGetRequest(baseURI + ApiEndpoints.getBudgetTracking(contactId), accessToken);
         ApiAssertions.assertStatusCode(response, 200);
         ApiAssertions.assertMessage(response, "Budget tracking details retrieved");
         ApiAssertions.assertResponseContainsData(response);

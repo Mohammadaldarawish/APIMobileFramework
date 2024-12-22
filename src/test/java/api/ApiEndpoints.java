@@ -1,7 +1,5 @@
 package api;
 
-import static tests.ApiTests.contactId;
-
 public class ApiEndpoints {
 
     public static String getSendOtp() {
@@ -20,43 +18,43 @@ public class ApiEndpoints {
         return "/api/v1/auth/refresh-token";
     }
 
-    public static String getVerifyContact() {
+    public static String getVerifyContact(String contactId) {
         return "/api/v1/auth/contacts/verify/" + contactId;
     }
 
-    public static String getEnrollmentBalance() {
+    public static String getEnrollmentBalance(String contactId) {
         return "/api/v1/forth/enrollment/" + contactId + "/balance";
     }
 
-    public static String getEnrolledDebt() {
+    public static String getEnrolledDebt(String contactId) {
         return "/api/v1/forth/contacts/" + contactId + "/debts/enrolled";
     }
 
-    public static String getContactTransactions() {
+    public static String getContactTransactions(String contactId) {
         return "/api/v1/forth/contacts/" + contactId + "/transactions";
     }
 
-    public static String getContactDocuments() {
+    public static String getContactDocuments(String contactId) {
         return "/api/v1/forth/contacts/" + contactId + "/documents";
     }
 
-    public static String getContactDetails() {
+    public static String getContactDetails(String contactId) {
         return "/api/v1/forth/contacts/" + contactId;
     }
 
-    public static String getPaymentTransactions() {
+    public static String getPaymentTransactions(String contactId) {
         return "/api/v1/forth/contacts/" + contactId + "/transactions/all-payments";
     }
 
-    public static String getUploadedDocuments() {
+    public static String getUploadedDocuments(String contactId) {
         return "/api/v1/forth/contacts/" + contactId + "/uploaded-documents";
     }
 
-    public static String getStatements() {
+    public static String getStatements(String contactId) {
         return "/api/v1/forth/contacts/" + contactId + "/statements";
     }
 
-    public static String getBudgetTracking() {
+    public static String getBudgetTracking(String contactId) {
         return "/api/v1/forth/contacts/" + contactId + "/budgetTracking";
     }
 
