@@ -7,10 +7,6 @@ import io.restassured.mapper.ObjectMapperType;
 
 public class ApiHelper {
 
-    public static String getBaseURI() {
-        return RestAssured.baseURI;  // Using the global baseURI set in BaseTest
-    }
-
     public static Response sendGetRequest(String fullURI, String accessToken) {
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + accessToken)

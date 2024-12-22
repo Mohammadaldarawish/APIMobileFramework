@@ -5,20 +5,35 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class BaseTest {
     public static String baseURI;
+    private static Properties properties;
+
+    static {
+        String configPath = System.getProperty("configPath", "src/main/resources/config.properties");
+        try (FileInputStream fileInputStream = new FileInputStream(configPath)) {
+            properties = new Properties();
+            properties.load(fileInputStream);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load configuration file from: " + configPath, e);
+        }
+    }
+
+    public static String getProperty(String key) {
+        return properties.getProperty(key);
+    }
 
     @BeforeClass
     public static void setup() {
         // Set the global base URI here once for all tests
-        RestAssured.baseURI = "https://dev.proxy.usclaritytech.com";
-    }
+        baseURI = properties.getProperty("baseURI");
+        RestAssured.baseURI = baseURI;
 
-    @BeforeMethod
-    public static void beforeMethod() {
-        baseURI = utils.ApiHelper.getBaseURI();
     }
-
 
     @DataProvider(name = "contactIdProvider")
     public Object[][] provideContactIds() {
